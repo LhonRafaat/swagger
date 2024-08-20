@@ -26,7 +26,7 @@ export class ReadonlyVisitor {
 
   visit(program: ts.Program, sf: ts.SourceFile) {
     const factoryHost = { factory: ts.factory } as any;
-    const parsedOptions: Record<string, any> = mergePluginOptions(this.options);
+    const parsedOptions: PluginOptions = mergePluginOptions(this.options);
 
     if (isFilenameMatched(parsedOptions.dtoFileNameSuffix, sf.fileName)) {
       return this.modelClassVisitor.visit(
@@ -39,6 +39,14 @@ export class ReadonlyVisitor {
     if (
       isFilenameMatched(parsedOptions.controllerFileNameSuffix, sf.fileName)
     ) {
+      return this.controllerClassVisitor.visit(
+        sf,
+        factoryHost,
+        program,
+        parsedOptions
+      );
+    }
+    if (isFilenameMatched(parsedOptions.modelFileNameSuffix, sf.fileName)) {
       return this.controllerClassVisitor.visit(
         sf,
         factoryHost,

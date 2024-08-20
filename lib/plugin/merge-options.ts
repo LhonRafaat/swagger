@@ -1,8 +1,9 @@
 import { isString } from '@nestjs/common/utils/shared.utils';
 
 export interface PluginOptions {
-  dtoFileNameSuffix?: string | string[];
-  controllerFileNameSuffix?: string | string[];
+  dtoFileNameSuffix?: string[];
+  controllerFileNameSuffix?: string[];
+  modelFileNameSuffix?: string[];
   classValidatorShim?: boolean;
   classTransformerShim?: boolean | 'exclusive';
   dtoKeyOfComment?: string;
@@ -17,6 +18,7 @@ export interface PluginOptions {
 const defaultOptions: PluginOptions = {
   dtoFileNameSuffix: ['.dto.ts', '.entity.ts'],
   controllerFileNameSuffix: ['.controller.ts'],
+  modelFileNameSuffix: ['model.ts'],
   classValidatorShim: true,
   classTransformerShim: false,
   dtoKeyOfComment: 'description',
@@ -34,6 +36,9 @@ export const mergePluginOptions = (
   }
   if (isString(options.controllerFileNameSuffix)) {
     options.controllerFileNameSuffix = [options.controllerFileNameSuffix];
+  }
+  if (isString(options.modelFileNameSuffix)) {
+    options.modelFileNameSuffix = [options.modelFileNameSuffix];
   }
   return {
     ...defaultOptions,
